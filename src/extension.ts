@@ -1,6 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import * as path from 'path';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -13,11 +14,32 @@ export function activate(context: vscode.ExtensionContext) {
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with registerCommand
 	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('extension.helloWorld', () => {
+	let disposable = vscode.commands.registerCommand('extension.toggleTestFile', () => {
 		// The code you place here will be executed every time your command is executed
 
 		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World!');
+    vscode.window.showInformationMessage('Hello World!!');
+    
+    let currentlyOpenTabfilePath: string = vscode.window.activeTextEditor!.document.fileName;
+    let currentlyOpenTabfileName = path.basename(currentlyOpenTabfilePath).split('.')[0];
+
+    if(currentlyOpenTabfilePath != "rendererLog" && !currentlyOpenTabfileName.includes("Untitled-")){
+      //vscode.window.showInformationMessage(currentlyOpenTabfileName);
+
+      // is the current file a test file? If so, adjust search pattern
+      let searchPattern : string = currentlyOpenTabfileName.includes('_spec') ?
+        `app/**/${currentlyOpenTabfileName.replace('_spec', '')}.rb` :
+        `spec/**/${currentlyOpenTabfileName}_spec.rb`;
+
+      // find file according to pattern
+      vscode.workspace.findFiles(searchPattern).then(result => {
+        vscode.window.showInformationMessage(result[0].toString());
+        vscode.workspace.openTextDocument(result[0]).then(doc => vscode.window.showTextDocument(doc))
+      });
+      
+    }else{
+      vscode.window.showInformationMessage("No File selected!");
+    }    
 	});
 
 	context.subscriptions.push(disposable);
