@@ -2,8 +2,11 @@
 
 All notable changes to the "toggle-test-file" extension will be documented in this file.
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [Unreleased]
+## 0.0.1
 
-- Initial release
+- Initial experimental release
+
+## 0.0.2
+
+- When files with the same name exist, the user will be prompted so select one
