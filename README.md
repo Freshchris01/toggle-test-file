@@ -15,4 +15,5 @@ For now only ruby is supported.
 
 ## Extension Settings
 
-For now, no settings are supported.
+* Default file ending can be changed
+* A test file suffix (e.g. "_spec") can be specified

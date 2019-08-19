@@ -3,6 +3,8 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { Uri } from 'vscode';
+import * as copy from 'copy-paste';
+import { IWorkspaceConfig } from './models/IWorkspaceConfig';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -10,24 +12,27 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
-	console.log('Toggle Test File is now active!');
+  console.log('Toggle Test File is now active!');
 
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with registerCommand
 	// The commandId parameter must match the command field in package.json
 	let disposable = vscode.commands.registerCommand('extension.toggleTestFile', () => {
 		// The code you place here will be executed every time your command is executed
-    
-    let currentlyOpenTabfilePath: string = vscode.window.activeTextEditor!.document.fileName;
-    let currentlyOpenTabfileName = path.basename(currentlyOpenTabfilePath).split('.')[0];
 
     // skip when no file is selected or file is new and unsaved
-    if(currentlyOpenTabfilePath != "rendererLog" && !currentlyOpenTabfileName.includes("Untitled-")){
+    let currentlyOpenTabfilePath = vscode.window.activeTextEditor!.document.fileName;
+    if(isValidFileOpen(currentlyOpenTabfilePath)){
+
+      let currentlyOpenTabfileName = path.basename(currentlyOpenTabfilePath).split('.')[0];
+
+      // load configs
+      let config: IWorkspaceConfig = loadConfig();
 
       // is the current file a test file? If so, adjust search pattern
-      let searchPattern : string = currentlyOpenTabfileName.includes('_spec') ?
-        `app/**/${currentlyOpenTabfileName.replace('_spec', '')}.rb` :
-        `spec/**/${currentlyOpenTabfileName}_spec.rb`;
+      let searchPattern : string = currentlyOpenTabfileName.includes(config.testFileSuffix) ?
+        `app/**/${currentlyOpenTabfileName.replace(config.testFileSuffix, '') + config.fileEnding}` :
+        `spec/**/${currentlyOpenTabfileName + config.testFileSuffix + config.fileEnding}`;
 
       // find file according to pattern
       vscode.workspace.findFiles(searchPattern).then(result => {
@@ -49,10 +54,46 @@ export function activate(context: vscode.ExtensionContext) {
     }else{
       vscode.window.showInformationMessage("No File selected!");
     }    
-	});
+  });
+  
+  let runTestFile = vscode.commands.registerCommand('extension.runTestFile', () => {
+    let currentlyOpenTabfilePath = vscode.window.activeTextEditor!.document.fileName;
+    if(isValidFileOpen(currentlyOpenTabfilePath)){
 
-	context.subscriptions.push(disposable);
+      let currentlyOpenTabfileName = path.basename(currentlyOpenTabfilePath).split('.')[0];
+
+      let config: IWorkspaceConfig = loadConfig();
+
+      if(isValidFileOpen(currentlyOpenTabfileName) && currentlyOpenTabfileName.includes(config.testFileSuffix)){
+        let command = `rspec ${currentlyOpenTabfilePath}`;
+        vscode.window.showInformationMessage(command, 'Copy to Clipboard')
+        .then(() =>{
+          copy.copy(command);
+        });
+      }else{
+        vscode.window.showInformationMessage("No valid testing File selected!");
+      }
+    }
+  });
+
+  context.subscriptions.push(disposable);
+  context.subscriptions.push(runTestFile);
 }
+
+function isValidFileOpen(currentlyOpenTabfilePath: string): boolean{
+  let currentlyOpenTabfileName = path.basename(currentlyOpenTabfilePath).split('.')[0];
+
+  return currentlyOpenTabfilePath != "rendererLog" && !currentlyOpenTabfileName.includes("Untitled-")
+}
+
+function loadConfig():IWorkspaceConfig{
+  let config = {} as IWorkspaceConfig;
+  config.workspaceConfig = vscode.workspace.getConfiguration('toggleTestFile')
+  config.fileEnding = config.workspaceConfig.get('fileEnding') || '.rb';
+  config.testFileSuffix = config.workspaceConfig.get('testFileSuffix') || '_spec';
+  return config;
+}
+
 function openFile(uriToFile: Uri){
 
           // check if file is already opened
