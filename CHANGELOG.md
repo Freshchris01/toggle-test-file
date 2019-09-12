@@ -25,3 +25,7 @@ All notable changes to the "toggle-test-file" extension will be documented in th
 
 - Added icon
 - Refactorings
+
+## 0.1.0
+
+- First Test Release
