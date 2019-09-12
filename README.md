@@ -1,7 +1,7 @@
-# toggle-test-file README
+# Toggle Test File README
 
-This is a vscode extension, which helps you navigate to test files directly.
-The current version only supports **Ruby** and doesn't provide the possibility for any configuration.
+This is a vscode extension, which helps you switch between source files and test files.
+The current version only supports **Ruby**, but the file-endings can be costumized, as well as a testing file suffix.
 
 ## Features
 
