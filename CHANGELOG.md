@@ -16,3 +16,12 @@ All notable changes to the "toggle-test-file" extension will be documented in th
 - When multiple files are found, you can choose which one to open with an input field
 - Adds ```Run Test File``` option to editor context menu (right-click)
 - Refactorings
+
+## 0.0.4
+
+- Copy test file path with context menu
+
+## 0.0.5
+
+- Added icon
+- Refactorings

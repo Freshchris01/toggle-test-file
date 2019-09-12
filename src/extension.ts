@@ -37,11 +37,11 @@ export function activate(context: vscode.ExtensionContext) {
       // find file according to pattern
       vscode.workspace.findFiles(searchPattern).then(result => {
         if(result.length == 0){
-          vscode.window.showInformationMessage("No associated file found..");
+          vscode.window.showInformationMessage('No associated file found..');
         }else if(result.length > 1){
           vscode.window.showQuickPick(result.map(res => res.path)).then(item =>{
             if(!item){
-              vscode.window.showInformationMessage("No File selected!"); 
+              vscode.window.showInformationMessage('No File selected!'); 
             }else{
               openFile(Uri.parse(item))
             }
@@ -52,7 +52,7 @@ export function activate(context: vscode.ExtensionContext) {
       });
       
     }else{
-      vscode.window.showInformationMessage("No File selected!");
+      vscode.window.showInformationMessage('No File selected!');
     }    
   });
   
@@ -66,12 +66,10 @@ export function activate(context: vscode.ExtensionContext) {
 
       if(isValidFileOpen(currentlyOpenTabfileName) && currentlyOpenTabfileName.includes(config.testFileSuffix)){
         let command = `rspec ${currentlyOpenTabfilePath}`;
-        vscode.window.showInformationMessage(command, 'Copy to Clipboard')
-        .then(() =>{
-          copy.copy(command);
-        });
+        copy.copy(command);
+        vscode.window.showInformationMessage('Test command copied!',)
       }else{
-        vscode.window.showInformationMessage("No valid testing File selected!");
+        vscode.window.showInformationMessage('No valid testing File selected!');
       }
     }
   });
@@ -83,7 +81,7 @@ export function activate(context: vscode.ExtensionContext) {
 function isValidFileOpen(currentlyOpenTabfilePath: string): boolean{
   let currentlyOpenTabfileName = path.basename(currentlyOpenTabfilePath).split('.')[0];
 
-  return currentlyOpenTabfilePath != "rendererLog" && !currentlyOpenTabfileName.includes("Untitled-")
+  return currentlyOpenTabfilePath != 'rendererLog' && !currentlyOpenTabfileName.includes('Untitled-')
 }
 
 function loadConfig():IWorkspaceConfig{

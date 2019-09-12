@@ -2,9 +2,10 @@
 	"name": "toggle-test-file",
 	"displayName": "Toggle Test File",
 	"description": "",
-	"version": "0.0.3",
+	"version": "0.0.5",
 	"publisher": "ChristianDiemers",
-	"repository": "https://github.com/Freshchris01/toggle-test-file",
+  "repository": "https://github.com/Freshchris01/toggle-test-file",
+  "icon": "./icon.png",
 	"engines": {
 		"vscode": "^1.37.0"
 	},
@@ -24,7 +25,7 @@
 			},
 			{
 				"command": "extension.runTestFile",
-				"title": "Run Test File"
+				"title": "Copy Test File Command"
 			}
 		],
 		"configuration": {
