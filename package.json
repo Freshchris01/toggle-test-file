@@ -5,7 +5,7 @@
 	"version": "0.0.5",
 	"publisher": "ChristianDiemers",
   "repository": "https://github.com/Freshchris01/toggle-test-file",
-  "icon": "./icon.png",
+  "icon": "icon.png",
 	"engines": {
 		"vscode": "^1.37.0"
 	},
