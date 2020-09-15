@@ -2,7 +2,7 @@
 	"name": "toggle-test-file",
 	"displayName": "Toggle Test File",
 	"description": "",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"publisher": "ChristianDiemers",
   "repository": "https://github.com/Freshchris01/toggle-test-file",
   "icon": "icon.png",
