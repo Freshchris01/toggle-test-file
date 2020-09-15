@@ -52,6 +52,10 @@
 				{
 					"group": "commands",
 					"command": "extension.runTestFile"
+        },
+        {
+					"group": "commands",
+					"command": "extension.Spring"
 				}
 			]
 		}
