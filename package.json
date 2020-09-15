@@ -25,7 +25,11 @@
 			},
 			{
 				"command": "extension.runTestFile",
-				"title": "Copy Test File Command"
+				"title": "Copy Test rspec Command"
+      },
+      {
+				"command": "extension.runTestFileSpring",
+				"title": "Copy Spring rpsec Command"
 			}
 		],
 		"configuration": {

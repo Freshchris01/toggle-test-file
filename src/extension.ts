@@ -57,25 +57,34 @@ export function activate(context: vscode.ExtensionContext) {
   });
   
   let runTestFile = vscode.commands.registerCommand('extension.runTestFile', () => {
-    let currentlyOpenTabfilePath = vscode.window.activeTextEditor!.document.fileName;
-    if(isValidFileOpen(currentlyOpenTabfilePath)){
-
-      let currentlyOpenTabfileName = path.basename(currentlyOpenTabfilePath).split('.')[0];
-
-      let config: IWorkspaceConfig = loadConfig();
-
-      if(isValidFileOpen(currentlyOpenTabfileName) && currentlyOpenTabfileName.includes(config.testFileSuffix)){
-        let command = `rspec ${currentlyOpenTabfilePath}`;
-        copy.copy(command);
-        vscode.window.showInformationMessage('Test command copied!',)
-      }else{
-        vscode.window.showInformationMessage('No valid testing File selected!');
-      }
-    }
+    copyTestCommand('rspec')
+  });
+  
+  let runTesstFileSpring = vscode.commands.registerCommand('extension.runTestFileSpring', () => {
+    copyTestCommand('bundle exec spring rspec')
   });
 
   context.subscriptions.push(disposable);
   context.subscriptions.push(runTestFile);
+  context.subscriptions.push(runTesstFileSpring);
+}
+
+function copyTestCommand(prefix: string) {
+  let currentlyOpenTabfilePath = vscode.window.activeTextEditor!.document.fileName;
+  if(isValidFileOpen(currentlyOpenTabfilePath)){
+
+    let currentlyOpenTabfileName = path.basename(currentlyOpenTabfilePath).split('.')[0];
+
+    let config: IWorkspaceConfig = loadConfig();
+
+    if(isValidFileOpen(currentlyOpenTabfileName) && currentlyOpenTabfileName.includes(config.testFileSuffix)){
+      let command = `${prefix} ${currentlyOpenTabfilePath}`;
+      copy.copy(command);
+      vscode.window.showInformationMessage('Test command copied!',)
+    }else{
+      vscode.window.showInformationMessage('No valid testing File selected!');
+    }
+  }
 }
 
 function isValidFileOpen(currentlyOpenTabfilePath: string): boolean{

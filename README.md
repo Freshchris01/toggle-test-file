@@ -9,6 +9,8 @@ When a source file is opened in vscode, trigger the **Toggle Test File** command
 
 When source files with the same name exist (in different directories), the user can select the right one.
 
+Copy test commands to the clipboard.
+
 ## Requirements
 
 For now only ruby is supported.
